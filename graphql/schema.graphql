@@ -1,0 +1,6 @@
+query hello {
+  hello {
+    world
+    number
+  }
+}

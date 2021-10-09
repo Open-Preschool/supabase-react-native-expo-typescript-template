@@ -3,14 +3,21 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { useUser } from '../contexts/UserContext';
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
+  const { user, session } = useUser();
+  console.log(
+    'session.access_token',
+    JSON.stringify(session?.access_token, null, 2),
+  );
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
+      <Text>{user?.email}</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
