@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -10,10 +11,7 @@ export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
   const { user, session } = useUser();
-  console.log(
-    'session.access_token',
-    JSON.stringify(session?.access_token, null, 2),
-  );
+  console.log('session', JSON.stringify(session, null, 2));
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>

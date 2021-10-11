@@ -1,4 +1,3 @@
-import { gql, useQuery } from '@apollo/client';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform, StyleSheet } from 'react-native';

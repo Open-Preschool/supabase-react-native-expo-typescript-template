@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,12 +13,32 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useQuery,
-  gql,
+  createHttpLink,
 } from '@apollo/client';
 
-const client = new ApolloClient({
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const authToken = await AsyncStorage.getItem('supabase.auth.token');
+  const token = authToken ? JSON.parse(authToken) : null;
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token
+        ? `Bearer ${token?.currentSession?.access_token ?? ''}`
+        : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

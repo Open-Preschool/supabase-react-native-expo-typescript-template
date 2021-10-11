@@ -5,6 +5,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { Button, Input } from 'react-native-elements';
 import { supabase } from '../lib/supabase';
+import { ApolloConsumer } from '@apollo/client';
 
 export default function TabTwoScreen() {
   return (
@@ -16,7 +17,19 @@ export default function TabTwoScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-      <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+      <ApolloConsumer>
+        {(client) => {
+          return (
+            <Button
+              title="Sign Out"
+              onPress={async () => {
+                await supabase.auth.signOut();
+                await client.resetStore();
+              }}
+            />
+          );
+        }}
+      </ApolloConsumer>
     </View>
   );
 }
